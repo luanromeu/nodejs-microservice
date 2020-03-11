@@ -1,0 +1,89 @@
+version: '3'
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: development.Dockerfile
+    image: empresas-backend/api-gateway:dev
+    restart: on-failure
+    environment:
+      - VIRTUAL_HOST=api-gateway.app.com
+    ports:
+      - 3000:3000
+    networks:
+        - dreamobs-network
+    links:
+        - api-auth
+    volumes:
+      - ./api-gateway:/app/src
+
+  api-auth:
+    build:
+      context: .
+      dockerfile: development.Dockerfile
+    image: empresas-backend/api-auth:dev
+    command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
+    restart: on-failure
+    depends_on: 
+      - mysql
+    links:
+      - mysql
+    ports:
+      - 3001:3001
+    networks:
+        - dreamobs-network
+    volumes:
+      - ./api-auth:/app/src
+      - ./start.sh:/usr/local/bin/start.sh
+      - ./wait.sh:/usr/local/bin/wait.sh
+
+  api-companies:
+      build:
+        context: .
+        dockerfile: development.Dockerfile
+      image: empresas-backend/api-comapnies:dev
+      command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
+      restart: on-failure
+      depends_on: 
+        - mysql
+      links:
+        - mysql
+      ports:
+        - 3002:3002
+      networks:
+        - dreamobs-network
+      volumes:
+        - ./api-companies:/app/src
+        - ./start.sh:/usr/local/bin/start.sh
+        - ./wait.sh:/usr/local/bin/wait.sh
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    networks:
+      - dreamobs-network
+    restart: always
+    command: --init-file /data/application/init.sql
+    volumes:
+        - ./api-auth/init.sql:/data/application/init.sql
+    environment:
+        MYSQL_ROOT_USER: root
+        MYSQL_ROOT_PASSWORD: secret
+        MYSQL_DATABASE: dev
+        MYSQL_USER: dev
+        MYSQL_PASSWORD: dev
+    healthcheck:
+        test: "mysql --user=dev --password=dev --execute \"SHOW DATABASES;\""
+        timeout: 20s
+        retries: 20
+
+networks:
+  dreamobs-network:
+    driver: bridge
+
+
+
+
+
+ 
