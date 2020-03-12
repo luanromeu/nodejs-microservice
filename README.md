@@ -34,6 +34,8 @@ O docker se encarregará da configuração do ambiente, instalar as dependencias
 docker-compose up -- build
 ou
 docker-compose up -d (caso deseje liberar o terminal após subir o servidor)
+ou
+docker stack deploy -c docker-compose.yml  "nome do serviço que será criado" (para rodar um serviço usando replicas)
 ```
 
 #ATENÇÂO

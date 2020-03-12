@@ -6,7 +6,7 @@ services:
       dockerfile: development.Dockerfile
     image: empresas-backend/api-gateway:dev
     deploy:
-      replicas: 3
+      replicas: 1
     restart: on-failure
     environment:
       - VIRTUAL_HOST=api-gateway.app.com
@@ -25,7 +25,7 @@ services:
       dockerfile: development.Dockerfile
     image: empresas-backend/api-auth:dev
     deploy:
-      replicas: 3
+      replicas: 1
     command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
     restart: on-failure
     depends_on: 
@@ -47,7 +47,7 @@ services:
         dockerfile: development.Dockerfile
       image: empresas-backend/api-comapnies:dev
       deploy:
-        replicas: 3
+        replicas: 1
       command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
       restart: on-failure
       depends_on: 
