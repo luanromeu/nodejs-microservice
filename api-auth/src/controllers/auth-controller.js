@@ -24,11 +24,14 @@ exports.authenticate = async (req, res, next) => {
                 password: user.password
             });
 
-            res.status(200).send({
+            res.setHeader('access-token', token);
+            res.setHeader('client', user.email);
+            res.setHeader('uid', user.id);
+            res.status(200).json({
                 'access-token': token,
                  'client': user.email,
                  'uid': user.id
-            });
+            })
 
 
     } catch (e) {

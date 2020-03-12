@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: development.Dockerfile
     image: empresas-backend/api-gateway:dev
+    deploy:
+      replicas: 3
     restart: on-failure
     environment:
       - VIRTUAL_HOST=api-gateway.app.com
@@ -22,6 +24,8 @@ services:
       context: .
       dockerfile: development.Dockerfile
     image: empresas-backend/api-auth:dev
+    deploy:
+      replicas: 3
     command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
     restart: on-failure
     depends_on: 
@@ -42,6 +46,8 @@ services:
         context: .
         dockerfile: development.Dockerfile
       image: empresas-backend/api-comapnies:dev
+      deploy:
+        replicas: 3
       command: bash -c "/usr/local/bin/wait.sh && /usr/local/bin/start.sh"
       restart: on-failure
       depends_on: 
@@ -80,7 +86,7 @@ services:
 
 networks:
   dreamobs-network:
-    driver: bridge
+    driver: overlay
 
 
 

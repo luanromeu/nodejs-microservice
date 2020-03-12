@@ -35,6 +35,9 @@ exports.authorize = function (req, res, next) {
                 });
             } else {
                 req.body.idUsuario = decoded.id
+                res.setHeader('access-token', token);
+                res.setHeader('client', client);
+                res.setHeader('uid', uid);
                 next();
             }
         });
