@@ -36,6 +36,13 @@ ou
 docker-compose up -d (caso deseje liberar o terminal após subir o servidor)
 ```
 
+#ATENÇÂO
+```
+Caso esteja utilizando windows e esteja recebendo o seguinte erro : " bash: ./wait.sh: /bin/bash^M: bad interpreter: No such file or directory"
+rode o comando a baixo de clone o projeto novamente.
+"git config --global core.autocrlf input"
+```
+Solução retirada de :  * [Solução](https://forums.docker.com/t/error-while-running-docker-code-in-powershell/34059/5)
 
 ## Author
 
