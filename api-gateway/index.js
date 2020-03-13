@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
+const authService = require('./services/auth-service')
 
 
 app.use(logger('dev'));
@@ -30,8 +31,8 @@ app.post(`/api/${API_VERSION}/users/*`, (req, res, next) => authServiceProxy(req
 //#endregion
 
 //#region  proxy api-companies
-app.get(`/api/${API_VERSION}/enterprises/*`, (req, res, next) => companiesServiceProxy(req, res, next));
-app.get(`/api/${API_VERSION}/enterprises`, (req, res, next) => companiesServiceProxy(req, res, next));
+app.get(`/api/${API_VERSION}/enterprises/*`, authService.authorize, (req, res, next) => companiesServiceProxy(req, res, next));
+app.get(`/api/${API_VERSION}/enterprises`,  authService.authorize, (req, res, next) => companiesServiceProxy(req, res, next));
 //#endregion
 
 app.listen(API_GATEWAY_PORT, 
