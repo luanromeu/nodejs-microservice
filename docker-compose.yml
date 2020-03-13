@@ -84,6 +84,32 @@ services:
         timeout: 20s
         retries: 20
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    networks:
+      - dreamobs-network
+    links:
+      - mysql
+    ports:
+      - 4000:80
+    environment:
+      - PMA_ARBITRARY=1
+         
+  portainer:
+     image: portainer/portainer
+     command: -H unix:///var/run/docker.sock
+     restart: always
+     networks:
+      - dreamobs-network
+     ports:
+       - 9000:9000
+       - 8000:8000
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - portainer_data:/data
+volumes:
+  portainer_data:
+
 networks:
   dreamobs-network:
     driver: overlay
